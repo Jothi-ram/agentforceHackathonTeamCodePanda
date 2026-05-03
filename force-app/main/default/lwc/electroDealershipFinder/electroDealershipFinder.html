@@ -1,0 +1,65 @@
+<template>
+    <section class="dealership-section">
+        <div class="dealership-container">
+            <h2 class="section-title">Find Your Nearest Dealership</h2>
+            <p class="section-subtitle">Visit an authorized Electra dealership to experience our vehicles</p>
+
+            <div class="search-bar">
+                <input type="text" placeholder="Enter your city or ZIP code..." value={searchQuery}
+                    onchange={handleSearchChange} class="search-input">
+                <button class="search-btn" onclick={handleSearch}>Search</button>
+            </div>
+
+            <div class="dealerships-grid">
+                <template for:each={dealerships} for:item="dealer" for:index="index">
+                    <div key={dealer.id} class="dealership-card">
+                        <div class="dealer-header">
+                            <h3 class="dealer-name">{dealer.name}</h3>
+                            <div class="dealer-rating">
+                                <span class="rating-stars">⭐ {dealer.rating}</span>
+                            </div>
+                        </div>
+
+                        <div class="dealer-info">
+                            <div class="info-item">
+                                <span class="info-icon">📍</span>
+                                <span>{dealer.address}</span>
+                            </div>
+                            <div class="info-item">
+                                <span class="info-icon">📞</span>
+                                <span>{dealer.phone}</span>
+                            </div>
+                            <div class="info-item">
+                                <span class="info-icon">🕒</span>
+                                <span>{dealer.hours}</span>
+                            </div>
+                            <div class="info-item">
+                                <span class="info-icon">📏</span>
+                                <span>{dealer.distance} miles away</span>
+                            </div>
+                        </div>
+
+                        <div class="dealer-features">
+                            <span class="feature-badge">Test Drive</span>
+                            <span class="feature-badge">Financing</span>
+                            <span class="feature-badge">Service</span>
+                        </div>
+
+                        <button class="btn-contact" onclick={handleContactDealer} data-dealer-id={dealer.id}>
+                            Contact Dealership →
+                        </button>
+                    </div>
+                </template>
+            </div>
+
+            <div class="map-section">
+                <h3 class="map-title">Dealership Locations Map</h3>
+                <div class="map-placeholder">
+                    <div class="map-icon">🗺️</div>
+                    <p>Interactive map with all dealership locations</p>
+                    <p class="map-note">This section would integrate Google Maps or Mapbox API</p>
+                </div>
+            </div>
+        </div>
+    </section>
+</template>

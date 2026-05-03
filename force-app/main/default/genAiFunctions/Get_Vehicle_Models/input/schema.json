@@ -1,0 +1,14 @@
+{
+  "required" : [ "inputQuery" ],
+  "unevaluatedProperties" : false,
+  "properties" : {
+    "inputQuery" : {
+      "title" : "inputQuery",
+      "description" : "Pass the input from user as is",
+      "lightning:type" : "lightning__textType",
+      "lightning:isPII" : false,
+      "copilotAction:isUserInput" : false
+    }
+  },
+  "lightning:type" : "lightning__objectType"
+}

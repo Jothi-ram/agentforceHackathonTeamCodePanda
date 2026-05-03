@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<GenAiFunction xmlns="http://soap.sforce.com/2006/04/metadata">
+    <description>Checks available test drive time slots at dealerships in the customer&apos;s 
+zip code. Use this after the customer tells you their preferred date 
+and time of day. Convert their input 
+to a proper Date and extract the time of day before calling.</description>
+    <developerName>Check_Available_Test_Drive_Slots</developerName>
+    <invocationTarget>CheckAvailableSlotsAction</invocationTarget>
+    <invocationTargetType>apex</invocationTargetType>
+    <isConfirmationRequired>false</isConfirmationRequired>
+    <isIncludeInProgressIndicator>true</isIncludeInProgressIndicator>
+    <localDeveloperName>Check_Available_Test_Drive_Slots</localDeveloperName>
+    <masterLabel>Check Available Test Drive Slots</masterLabel>
+    <progressIndicatorMessage>Let me check available slots for you</progressIndicatorMessage>
+</GenAiFunction>

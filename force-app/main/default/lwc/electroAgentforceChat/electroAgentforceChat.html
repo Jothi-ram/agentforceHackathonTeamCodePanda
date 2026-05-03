@@ -1,0 +1,96 @@
+<template>
+    <div class="agentforce-modal">
+        <div class="modal-backdrop" onclick={handleClose}></div>
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2>Test Drive Booking Assistant</h2>
+                <button class="close-btn" onclick={handleClose}>✕</button>
+            </div>
+
+            <div class="modal-body">
+                <div class="chat-container">
+                    <div class="chat-messages">
+                        <div class="message bot-message">
+                            <div class="message-avatar">🤖</div>
+                            <div class="message-content">
+                                <p>Hello! Welcome to Electra's Test Drive Booking Service. I'm your AI Assistant powered
+                                    by Salesforce AgentForce.</p>
+                                <p>I can help you schedule a test drive for any of our vehicles. Let me gather some
+                                    information from you.</p>
+                            </div>
+                        </div>
+
+                        <div class="message bot-message" lwc:if={showForm}>
+                            <div class="message-avatar">🤖</div>
+                            <div class="message-content">
+                                <p>What is your preferred test drive date?</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="chat-input-section" lwc:if={showInputForm}>
+                        <div class="form-group" lwc:if={showFormFields}>
+                            <label>Your Name *</label>
+                            <input type="text" placeholder="John Doe" value={customerName} onchange={handleNameChange}
+                                class="form-input">
+                        </div>
+
+                        <div class="form-group" lwc:if={showFormFields}>
+                            <label>Email Address *</label>
+                            <input type="email" placeholder="john@example.com" value={customerEmail}
+                                onchange={handleEmailChange} class="form-input">
+                        </div>
+
+                        <div class="form-group" lwc:if={showFormFields}>
+                            <label>Phone Number *</label>
+                            <input type="tel" placeholder="+1 (555) 000-0000" value={customerPhone}
+                                onchange={handlePhoneChange} class="form-input">
+                        </div>
+
+                        <div class="form-group" lwc:if={showFormFields}>
+                            <label>Preferred Date *</label>
+                            <input type="date" value={preferredDate} onchange={handleDateChange} class="form-input">
+                        </div>
+
+                        <div class="form-group" lwc:if={showFormFields}>
+                            <label>Preferred Time *</label>
+                            <select value={preferredTime} onchange={handleTimeChange} class="form-input">
+                                <option value="">Select Time</option>
+                                <option value="9:00 AM">9:00 AM</option>
+                                <option value="10:00 AM">10:00 AM</option>
+                                <option value="11:00 AM">11:00 AM</option>
+                                <option value="12:00 PM">12:00 PM</option>
+                                <option value="2:00 PM">2:00 PM</option>
+                                <option value="3:00 PM">3:00 PM</option>
+                                <option value="4:00 PM">4:00 PM</option>
+                                <option value="5:00 PM">5:00 PM</option>
+                            </select>
+                        </div>
+
+                        <button class="btn-submit" onclick={handleSubmit} lwc:if={showFormFields}>
+                            Book Test Drive
+                        </button>
+
+                        <div class="confirmation-message" lwc:if={formSubmitted}>
+                            <div class="message bot-message">
+                                <div class="message-avatar">✅</div>
+                                <div class="message-content">
+                                    <p>Perfect! Your test drive has been booked!</p>
+                                    <p><strong>Name:</strong> {customerName}</p>
+                                    <p><strong>Date:</strong> {preferredDate}</p>
+                                    <p><strong>Time:</strong> {preferredTime}</p>
+                                    <p>We'll send you a confirmation email shortly. Get ready to experience the future
+                                        of electric mobility!</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="chat-footer">
+                        <p class="footer-text">Powered by Salesforce AgentForce</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</template>

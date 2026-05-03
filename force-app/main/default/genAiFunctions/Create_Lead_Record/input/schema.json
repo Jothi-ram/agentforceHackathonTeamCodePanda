@@ -1,0 +1,56 @@
+{
+  "required" : [ "email", "firstName", "lastName", "phone", "productId", "zipCode" ],
+  "unevaluatedProperties" : false,
+  "properties" : {
+    "bookingChannel" : {
+      "title" : "Booking Channel",
+      "description" : "\"Website - Agentforce\" (or \"WhatsApp - Agentforce\" if on WhatsApp)\n",
+      "lightning:type" : "lightning__textType",
+      "lightning:isPII" : false,
+      "copilotAction:isUserInput" : false
+    },
+    "email" : {
+      "title" : "Email Address",
+      "description" : "{email from Step 2}",
+      "lightning:type" : "lightning__textType",
+      "lightning:isPII" : false,
+      "copilotAction:isUserInput" : false
+    },
+    "firstName" : {
+      "title" : "First Name",
+      "description" : " {firstName from Step 2}",
+      "lightning:type" : "lightning__textType",
+      "lightning:isPII" : false,
+      "copilotAction:isUserInput" : false
+    },
+    "lastName" : {
+      "title" : "Last Name",
+      "description" : " {lastName from Step 2}",
+      "lightning:type" : "lightning__textType",
+      "lightning:isPII" : false,
+      "copilotAction:isUserInput" : false
+    },
+    "phone" : {
+      "title" : "Phone Number",
+      "description" : "{phone from Step 2}",
+      "lightning:type" : "lightning__textType",
+      "lightning:isPII" : false,
+      "copilotAction:isUserInput" : false
+    },
+    "productId" : {
+      "title" : "Product ID",
+      "description" : "{selectedProductId from Step 1}",
+      "lightning:type" : "lightning__textType",
+      "lightning:isPII" : false,
+      "copilotAction:isUserInput" : false
+    },
+    "zipCode" : {
+      "title" : "Zip Code",
+      "description" : " {zipCode from Step 2}",
+      "lightning:type" : "lightning__textType",
+      "lightning:isPII" : false,
+      "copilotAction:isUserInput" : false
+    }
+  },
+  "lightning:type" : "lightning__objectType"
+}

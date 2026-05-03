@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<GenAiFunction xmlns="http://soap.sforce.com/2006/04/metadata">
+    <description>Creates a test drive booking and associated lead record. Call this action only after ALL of the following have been collected and confirmed: vehicle model name, dealership ID, preferred date, time slot, customer full name, email address, phone number, and pincode. Before calling this action, confirm all details with the customer in a summary. Only proceed if the customer confirms. If the output shows success is false, relay the error message to the customer and ask them to correct the information.</description>
+    <developerName>Create_Test_Drive_Record</developerName>
+    <invocationTarget>CreateTestDriveRecord</invocationTarget>
+    <invocationTargetType>apex</invocationTargetType>
+    <isConfirmationRequired>false</isConfirmationRequired>
+    <isIncludeInProgressIndicator>true</isIncludeInProgressIndicator>
+    <localDeveloperName>Create_Test_Drive_Record</localDeveloperName>
+    <masterLabel>Create Test Drive Record</masterLabel>
+    <progressIndicatorMessage>Booking your Test drive appointment</progressIndicatorMessage>
+</GenAiFunction>

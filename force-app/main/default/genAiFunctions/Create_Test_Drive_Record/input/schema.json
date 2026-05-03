@@ -1,0 +1,70 @@
+{
+  "required" : [ "customerName", "dealershipId", "email", "phone", "preferredDate", "timeSlot", "vehicleModelName", "zipCode" ],
+  "unevaluatedProperties" : false,
+  "properties" : {
+    "channel" : {
+      "title" : "Channel",
+      "description" : "Booking channel: Web, WhatsApp, SMS",
+      "lightning:type" : "lightning__textType",
+      "lightning:isPII" : false,
+      "copilotAction:isUserInput" : false
+    },
+    "customerName" : {
+      "title" : "Customer Name",
+      "description" : "Full name of the customer. The customer's full name as they provided it",
+      "lightning:type" : "lightning__textType",
+      "lightning:isPII" : false,
+      "copilotAction:isUserInput" : true
+    },
+    "dealershipId" : {
+      "title" : "Dealership Id",
+      "description" : "Salesforce ID of the assigned dealership. The Salesforce ID returned by \"Find Nearest Dealership\". Do not ask the customer for this.",
+      "lightning:type" : "lightning__textType",
+      "lightning:isPII" : false,
+      "copilotAction:isUserInput" : false
+    },
+    "email" : {
+      "title" : "Email",
+      "description" : "Customer email address. The customer's email address. Confirm it is a valid email format.",
+      "lightning:type" : "lightning__textType",
+      "lightning:isPII" : false,
+      "copilotAction:isUserInput" : true
+    },
+    "phone" : {
+      "title" : "Phone",
+      "description" : "Customer phone number. The customer's email address. Confirm it is a valid email format.",
+      "lightning:type" : "lightning__textType",
+      "lightning:isPII" : false,
+      "copilotAction:isUserInput" : true
+    },
+    "preferredDate" : {
+      "title" : "Preferred Date",
+      "description" : "Preferred test drive date.Use the confirmed available date from \"Check Slot Availability\".",
+      "lightning:type" : "lightning__dateType",
+      "lightning:isPII" : false,
+      "copilotAction:isUserInput" : false
+    },
+    "timeSlot" : {
+      "title" : "Time Slot",
+      "description" : "Morning, Afternoon, or Evening",
+      "lightning:type" : "lightning__textType",
+      "lightning:isPII" : false,
+      "copilotAction:isUserInput" : false
+    },
+    "vehicleModelName" : {
+      "title" : "Vehicle Model Name",
+      "description" : "Name of the selected vehicle model. The exact name of the vehicle model the customer selected. Must match a model from the \"Get Vehicle Models\" list exactly.",
+      "lightning:type" : "lightning__textType",
+      "lightning:isPII" : false,
+      "copilotAction:isUserInput" : false
+    },
+    "zipCode" : {
+      "title" : "Zip Code",
+      "description" : "Customer zip code. The customer's 6-digit zipcode provided earlier.",
+      "lightning:type" : "lightning__textType",
+      "lightning:isPII" : false,
+      "copilotAction:isUserInput" : false
+    }
+  },
+  "lightning:type" : "lightning__objectType"
+}

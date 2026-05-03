@@ -1,0 +1,418 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Flow xmlns="http://soap.sforce.com/2006/04/metadata">
+    <apiVersion>66.0</apiVersion>
+    <areMetricsLoggedToDataCloud>false</areMetricsLoggedToDataCloud>
+    <assignments>
+        <name>Assign_Best_Dealer</name>
+        <label>Assign Best Dealer</label>
+        <locationX>0</locationX>
+        <locationY>0</locationY>
+        <assignmentItems>
+            <assignToReference>varBestScore</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <elementReference>varCurrentDealerScore</elementReference>
+            </value>
+        </assignmentItems>
+        <assignmentItems>
+            <assignToReference>varBestDealer</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <elementReference>Loop_through_dealer_collection_set.Id</elementReference>
+            </value>
+        </assignmentItems>
+        <connector>
+            <targetReference>Loop_through_dealer_collection_set</targetReference>
+        </connector>
+    </assignments>
+    <assignments>
+        <description>Calculates best dealer score. Currently if dealer is available at this step then we assign conversion rate to it.
+Can add more scoring mechanisms</description>
+        <name>Calculate_best_dealer_score</name>
+        <label>Calculate best dealer score</label>
+        <locationX>0</locationX>
+        <locationY>0</locationY>
+        <assignmentItems>
+            <assignToReference>varCurrentDealerScore</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <elementReference>Loop_through_dealer_collection_set.Conversion_Rate__c</elementReference>
+            </value>
+        </assignmentItems>
+        <connector>
+            <targetReference>Better_Dealer</targetReference>
+        </connector>
+    </assignments>
+    <assignments>
+        <description>Count Test Drives at same slot</description>
+        <name>Count_Test_Drives_at_same_slot</name>
+        <label>Count Test Drives at same slot</label>
+        <locationX>0</locationX>
+        <locationY>0</locationY>
+        <assignmentItems>
+            <assignToReference>varSameSlotCount</assignToReference>
+            <operator>AssignCount</operator>
+            <value>
+                <elementReference>Get_Test_Drives_for_each_dealer</elementReference>
+            </value>
+        </assignmentItems>
+        <connector>
+            <targetReference>Compare_with_Capacity</targetReference>
+        </connector>
+    </assignments>
+    <assignments>
+        <description>Gets count of Get Same Zip Code Dealer</description>
+        <name>Get_Same_Zip_Code_Dealers_Count</name>
+        <label>Get Same Zip Code Dealers Count</label>
+        <locationX>0</locationX>
+        <locationY>0</locationY>
+        <assignmentItems>
+            <assignToReference>varCountDealerSameZip</assignToReference>
+            <operator>AssignCount</operator>
+            <value>
+                <elementReference>varSameZipDealCollection</elementReference>
+            </value>
+        </assignmentItems>
+        <connector>
+            <targetReference>Dealers_as_per_count</targetReference>
+        </connector>
+    </assignments>
+    <decisions>
+        <description>Comparing current dealer score with best score and assigning the greater number to best score</description>
+        <name>Better_Dealer</name>
+        <label>Better Dealer?</label>
+        <locationX>0</locationX>
+        <locationY>0</locationY>
+        <defaultConnector>
+            <targetReference>Loop_through_dealer_collection_set</targetReference>
+        </defaultConnector>
+        <defaultConnectorLabel>Default Outcome</defaultConnectorLabel>
+        <rules>
+            <name>Compare_Dealer_Score</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>varCurrentDealerScore</leftValueReference>
+                <operator>GreaterThan</operator>
+                <rightValue>
+                    <elementReference>varBestScore</elementReference>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>Assign_Best_Dealer</targetReference>
+            </connector>
+            <label>Compare Dealer Score</label>
+        </rules>
+    </decisions>
+    <decisions>
+        <description>Compare slotcount with capacity per slot(on dealer object)</description>
+        <name>Compare_with_Capacity</name>
+        <label>Compare with Capacity</label>
+        <locationX>0</locationX>
+        <locationY>0</locationY>
+        <defaultConnector>
+            <targetReference>Loop_through_dealer_collection_set</targetReference>
+        </defaultConnector>
+        <defaultConnectorLabel>Default Outcome</defaultConnectorLabel>
+        <rules>
+            <name>Dealer_Available</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>varSameSlotCount</leftValueReference>
+                <operator>LessThan</operator>
+                <rightValue>
+                    <elementReference>Loop_through_dealer_collection_set.Capacity_Per_Slot__c</elementReference>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>Calculate_best_dealer_score</targetReference>
+            </connector>
+            <label>Dealer Available</label>
+        </rules>
+    </decisions>
+    <decisions>
+        <name>Dealers_as_per_count</name>
+        <label>Dealers as per count</label>
+        <locationX>0</locationX>
+        <locationY>0</locationY>
+        <defaultConnectorLabel>Default Outcome</defaultConnectorLabel>
+        <rules>
+            <name>If_no_dealers_in_same_zip</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>varCountDealerSameZip</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <numberValue>0.0</numberValue>
+                </rightValue>
+            </conditions>
+            <label>If no dealers in same zip</label>
+        </rules>
+        <rules>
+            <name>If_1_dealer_in_same_zip_found</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>varCountDealerSameZip</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <numberValue>1.0</numberValue>
+                </rightValue>
+            </conditions>
+            <label>If 1 dealer in same zip found</label>
+        </rules>
+        <rules>
+            <name>If_more_than_1_dealer_found</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>varCountDealerSameZip</leftValueReference>
+                <operator>GreaterThan</operator>
+                <rightValue>
+                    <numberValue>1.0</numberValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>Loop_through_dealer_collection_set</targetReference>
+            </connector>
+            <label>If more than 1 dealer found</label>
+        </rules>
+    </decisions>
+    <environments>Default</environments>
+    <interviewLabel>Get Dealer {!$Flow.CurrentDateTime}</interviewLabel>
+    <label>Get Dealer</label>
+    <loops>
+        <name>Loop_through_dealer_collection_set</name>
+        <label>Loop through dealer collection set</label>
+        <locationX>0</locationX>
+        <locationY>0</locationY>
+        <collectionReference>varSameZipDealCollection</collectionReference>
+        <iterationOrder>Asc</iterationOrder>
+        <nextValueConnector>
+            <targetReference>Get_Test_Drives_for_each_dealer</targetReference>
+        </nextValueConnector>
+        <noMoreValuesConnector>
+            <targetReference>Update_Triggering_Test_Drive_Record</targetReference>
+        </noMoreValuesConnector>
+    </loops>
+    <processMetadataValues>
+        <name>BuilderType</name>
+        <value>
+            <stringValue>LightningFlowBuilder</stringValue>
+        </value>
+    </processMetadataValues>
+    <processMetadataValues>
+        <name>CanvasMode</name>
+        <value>
+            <stringValue>AUTO_LAYOUT_CANVAS</stringValue>
+        </value>
+    </processMetadataValues>
+    <processMetadataValues>
+        <name>OriginBuilderType</name>
+        <value>
+            <stringValue>LightningFlowBuilder</stringValue>
+        </value>
+    </processMetadataValues>
+    <processType>AutoLaunchedFlow</processType>
+    <recordLookups>
+        <description>Fetch same zip code dealers as user input</description>
+        <name>Get_Same_Zip_Code_Dealers</name>
+        <label>Get Same Zip Code Dealers</label>
+        <locationX>0</locationX>
+        <locationY>0</locationY>
+        <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
+        <connector>
+            <targetReference>Get_Same_Zip_Code_Dealers_Count</targetReference>
+        </connector>
+        <filterLogic>and</filterLogic>
+        <filters>
+            <field>BillingPostalCode</field>
+            <operator>IsNull</operator>
+            <value>
+                <booleanValue>false</booleanValue>
+            </value>
+        </filters>
+        <filters>
+            <field>BillingPostalCode</field>
+            <operator>EqualTo</operator>
+            <value>
+                <elementReference>varZipCode</elementReference>
+            </value>
+        </filters>
+        <object>Account</object>
+        <outputReference>varSameZipDealCollection</outputReference>
+        <queriedFields>Id</queriedFields>
+        <queriedFields>Name</queriedFields>
+    </recordLookups>
+    <recordLookups>
+        <description>Get Test Drives for each dealer</description>
+        <name>Get_Test_Drives_for_each_dealer</name>
+        <label>Get Test Drives for each dealer</label>
+        <locationX>0</locationX>
+        <locationY>0</locationY>
+        <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
+        <connector>
+            <targetReference>Count_Test_Drives_at_same_slot</targetReference>
+        </connector>
+        <filterLogic>and</filterLogic>
+        <filters>
+            <field>Dealer__c</field>
+            <operator>EqualTo</operator>
+            <value>
+                <elementReference>Loop_through_dealer_collection_set.Id</elementReference>
+            </value>
+        </filters>
+        <filters>
+            <field>Status__c</field>
+            <operator>EqualTo</operator>
+            <value>
+                <stringValue>Scheduled</stringValue>
+            </value>
+        </filters>
+        <filters>
+            <field>Test_Drive_Date_Time__c</field>
+            <operator>EqualTo</operator>
+            <value>
+                <elementReference>varPreferredDateTime</elementReference>
+            </value>
+        </filters>
+        <getFirstRecordOnly>false</getFirstRecordOnly>
+        <object>Test_Drive__c</object>
+        <storeOutputAutomatically>true</storeOutputAutomatically>
+    </recordLookups>
+    <recordUpdates>
+        <name>Update_Triggering_Test_Drive_Record</name>
+        <label>Update Triggering Test Drive Record</label>
+        <locationX>0</locationX>
+        <locationY>0</locationY>
+        <inputAssignments>
+            <field>Dealer__c</field>
+            <value>
+                <elementReference>varBestDealer</elementReference>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <field>Status__c</field>
+            <value>
+                <stringValue>Scheduled</stringValue>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <field>Test_Drive_Date_Time__c</field>
+            <value>
+                <elementReference>varPreferredDateTime</elementReference>
+            </value>
+        </inputAssignments>
+        <inputReference>$Record</inputReference>
+    </recordUpdates>
+    <start>
+        <locationX>0</locationX>
+        <locationY>0</locationY>
+        <connector>
+            <targetReference>Get_Same_Zip_Code_Dealers</targetReference>
+        </connector>
+        <filterLogic>and</filterLogic>
+        <filters>
+            <field>Dealer__c</field>
+            <operator>IsNull</operator>
+            <value>
+                <booleanValue>true</booleanValue>
+            </value>
+        </filters>
+        <object>Test_Drive__c</object>
+        <recordTriggerType>CreateAndUpdate</recordTriggerType>
+        <triggerType>RecordAfterSave</triggerType>
+    </start>
+    <status>Draft</status>
+    <variables>
+        <description>Final Best Dealer</description>
+        <name>varBestDealer</name>
+        <dataType>String</dataType>
+        <isCollection>false</isCollection>
+        <isInput>false</isInput>
+        <isOutput>true</isOutput>
+    </variables>
+    <variables>
+        <description>Denotes test deal&apos;s best score</description>
+        <name>varBestScore</name>
+        <dataType>Number</dataType>
+        <isCollection>false</isCollection>
+        <isInput>false</isInput>
+        <isOutput>false</isOutput>
+        <scale>0</scale>
+        <value>
+            <numberValue>0.0</numberValue>
+        </value>
+    </variables>
+    <variables>
+        <description>Counts number of dealers with same zip code</description>
+        <name>varCountDealerSameZip</name>
+        <dataType>Number</dataType>
+        <isCollection>false</isCollection>
+        <isInput>false</isInput>
+        <isOutput>false</isOutput>
+        <scale>0</scale>
+    </variables>
+    <variables>
+        <description>Denotes test drive dealer&apos;s current dealer score</description>
+        <name>varCurrentDealerScore</name>
+        <dataType>Number</dataType>
+        <isCollection>false</isCollection>
+        <isInput>false</isInput>
+        <isOutput>false</isOutput>
+        <scale>0</scale>
+        <value>
+            <numberValue>0.0</numberValue>
+        </value>
+    </variables>
+    <variables>
+        <description>Customer name received from agent</description>
+        <name>varCustomerName</name>
+        <dataType>String</dataType>
+        <isCollection>false</isCollection>
+        <isInput>true</isInput>
+        <isOutput>true</isOutput>
+    </variables>
+    <variables>
+        <description>Preferred Model input by agent</description>
+        <name>varModel</name>
+        <dataType>String</dataType>
+        <isCollection>false</isCollection>
+        <isInput>false</isInput>
+        <isOutput>true</isOutput>
+    </variables>
+    <variables>
+        <description>Preferred Date Time received from agent</description>
+        <name>varPreferredDateTime</name>
+        <dataType>DateTime</dataType>
+        <isCollection>false</isCollection>
+        <isInput>true</isInput>
+        <isOutput>true</isOutput>
+    </variables>
+    <variables>
+        <description>Count of test drives with same dealer at same slot</description>
+        <name>varSameSlotCount</name>
+        <dataType>Number</dataType>
+        <isCollection>false</isCollection>
+        <isInput>false</isInput>
+        <isOutput>false</isOutput>
+        <scale>0</scale>
+        <value>
+            <numberValue>0.0</numberValue>
+        </value>
+    </variables>
+    <variables>
+        <description>Collection of same zip dealers</description>
+        <name>varSameZipDealCollection</name>
+        <dataType>SObject</dataType>
+        <isCollection>true</isCollection>
+        <isInput>false</isInput>
+        <isOutput>false</isOutput>
+        <objectType>Account</objectType>
+    </variables>
+    <variables>
+        <description>Get Zip code from agent</description>
+        <name>varZipCode</name>
+        <dataType>String</dataType>
+        <isCollection>false</isCollection>
+        <isInput>true</isInput>
+        <isOutput>true</isOutput>
+    </variables>
+</Flow>

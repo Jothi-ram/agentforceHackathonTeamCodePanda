@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<GenAiFunction xmlns="http://soap.sforce.com/2006/04/metadata">
+    <description>Books the test drive appointment after customer selects a specific time from available slots. This will find the best dealer, create the appointment, and update the lead.</description>
+    <developerName>Book_Test_Drive_Appointments</developerName>
+    <invocationTarget>BookTestDriveAction</invocationTarget>
+    <invocationTargetType>apex</invocationTargetType>
+    <isConfirmationRequired>false</isConfirmationRequired>
+    <isIncludeInProgressIndicator>true</isIncludeInProgressIndicator>
+    <localDeveloperName>Book_Test_Drive_Appointments</localDeveloperName>
+    <masterLabel>Book Test Drive Appointments</masterLabel>
+    <progressIndicatorMessage>Test drive booking in progress....</progressIndicatorMessage>
+</GenAiFunction>

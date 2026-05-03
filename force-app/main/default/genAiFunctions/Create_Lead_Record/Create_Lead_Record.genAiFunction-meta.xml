@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<GenAiFunction xmlns="http://soap.sforce.com/2006/04/metadata">
+    <description>Creates new Lead for test drive booking</description>
+    <developerName>Create_Lead_Record</developerName>
+    <invocationTarget>createLeadRecord</invocationTarget>
+    <invocationTargetType>apex</invocationTargetType>
+    <isConfirmationRequired>false</isConfirmationRequired>
+    <isIncludeInProgressIndicator>true</isIncludeInProgressIndicator>
+    <localDeveloperName>Create_Lead_Record</localDeveloperName>
+    <masterLabel>Create Lead Record</masterLabel>
+    <progressIndicatorMessage>Updating details</progressIndicatorMessage>
+</GenAiFunction>

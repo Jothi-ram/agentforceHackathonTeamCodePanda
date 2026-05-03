@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<GenAiFunction xmlns="http://soap.sforce.com/2006/04/metadata">
+    <description>Sends a test drive booking confirmation to the customer. Call this action immediately after the &quot;Create Test Drive Record&quot; action succeeds. This sends a confirmation email or message to the customer. Use the Test Drive Id returned from the booking action. Do not ask the customer for this ID</description>
+    <developerName>Send_Booking_Confirmation</developerName>
+    <invocationTarget>SendBookingConfirmation</invocationTarget>
+    <invocationTargetType>apex</invocationTargetType>
+    <isConfirmationRequired>false</isConfirmationRequired>
+    <isIncludeInProgressIndicator>false</isIncludeInProgressIndicator>
+    <localDeveloperName>Send_Booking_Confirmation</localDeveloperName>
+    <masterLabel>Send Booking Confirmation</masterLabel>
+</GenAiFunction>

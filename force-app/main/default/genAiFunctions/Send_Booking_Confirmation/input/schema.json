@@ -1,0 +1,21 @@
+{
+  "required" : [ "testDriveId" ],
+  "unevaluatedProperties" : false,
+  "properties" : {
+    "channel" : {
+      "title" : "Channel",
+      "description" : "Notification channel: Email, WhatsApp, SMS",
+      "lightning:type" : "lightning__textType",
+      "lightning:isPII" : false,
+      "copilotAction:isUserInput" : false
+    },
+    "testDriveId" : {
+      "title" : "Test Drive Id",
+      "description" : "ID of the Test Drive record. Use the Test Drive Id returned by the \"Create Test Drive Record\" action. Never ask the customer for this.\n ",
+      "lightning:type" : "lightning__textType",
+      "lightning:isPII" : false,
+      "copilotAction:isUserInput" : false
+    }
+  },
+  "lightning:type" : "lightning__objectType"
+}

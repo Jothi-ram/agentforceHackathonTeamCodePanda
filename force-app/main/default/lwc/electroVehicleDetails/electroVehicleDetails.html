@@ -1,0 +1,165 @@
+<template>
+    <section class="vehicle-details">
+        <div class="details-container">
+            <button class="btn-back" onclick={handleBack}>← Back to Vehicles</button>
+
+            <!-- Loading state -->
+            <template lwc:if={isLoading}>
+                <div class="loading-container">
+                    <div class="loading-spinner"></div>
+                    <p class="loading-text">Loading vehicle details...</p>
+                </div>
+            </template>
+
+            <!-- Error state -->
+            <template lwc:elseif={error}>
+                <div class="error-container">
+                    <p class="error-icon">⚠️</p>
+                    <p class="error-title">Unable to load vehicle details</p>
+                    <p class="error-message">{errorMessage}</p>
+                </div>
+            </template>
+
+            <!-- Vehicle detail content -->
+            <template lwc:elseif={vehicle}>
+                <div class="details-grid">
+                    <!-- Left: Visual + Gallery -->
+                    <div class="details-multimedia">
+                        <div class="vehicle-display">
+                            <div class="vehicle-emoji" style="--color: {vehicle.color}">{vehicle.emoji}</div>
+                        </div>
+                        <div class="vehicle-meta-badges">
+                            <span class="meta-badge">{vehicle.fuelType}</span>
+                            <template lwc:if={vehicle.vehicleClass}>
+                                <span class="meta-badge">{vehicle.vehicleClass}</span>
+                            </template>
+                            <template lwc:if={vehicle.modelCode}>
+                                <span class="meta-badge meta-badge--secondary">#{vehicle.modelCode}</span>
+                            </template>
+                        </div>
+
+                        <!-- Dimensions panel -->
+                        <div class="dimensions-panel">
+                            <h4 class="panel-title">Dimensions</h4>
+                            <div class="dim-grid">
+                                <div class="dim-item">
+                                    <span class="dim-label">Length</span>
+                                    <span class="dim-value">{vehicle.length}</span>
+                                </div>
+                                <div class="dim-item">
+                                    <span class="dim-label">Width</span>
+                                    <span class="dim-value">{vehicle.width}</span>
+                                </div>
+                                <div class="dim-item">
+                                    <span class="dim-label">Height</span>
+                                    <span class="dim-value">{vehicle.height}</span>
+                                </div>
+                                <div class="dim-item">
+                                    <span class="dim-label">Wheelbase</span>
+                                    <span class="dim-value">{vehicle.wheelbase}</span>
+                                </div>
+                                <div class="dim-item">
+                                    <span class="dim-label">Curb Weight</span>
+                                    <span class="dim-value">{vehicle.curbWeight}</span>
+                                </div>
+                                <div class="dim-item">
+                                    <span class="dim-label">Doors</span>
+                                    <span class="dim-value">{vehicle.doorCount}</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Right: Info -->
+                    <div class="details-info">
+                        <h1 class="details-title">{vehicle.name}</h1>
+                        <template lwc:if={vehicle.variantName}>
+                            <p class="details-variant">{vehicle.variantName}</p>
+                        </template>
+                        <p class="details-type">{vehicle.type}</p>
+
+                        <!-- Key Specs -->
+                        <div class="specs-section">
+                            <h3 class="specs-title">Key Specifications</h3>
+                            <div class="specs-grid">
+                                <div class="spec-card">
+                                    <div class="spec-icon">⚡</div>
+                                    <div class="spec-name">Max Range</div>
+                                    <div class="spec-value">{vehicle.range}</div>
+                                </div>
+                                <div class="spec-card">
+                                    <div class="spec-icon">🏁</div>
+                                    <div class="spec-name">0–100 km/h</div>
+                                    <div class="spec-value">{vehicle.acceleration}</div>
+                                </div>
+                                <div class="spec-card">
+                                    <div class="spec-icon">💨</div>
+                                    <div class="spec-name">Top Speed</div>
+                                    <div class="spec-value">{vehicle.topSpeed}</div>
+                                </div>
+                                <div class="spec-card">
+                                    <div class="spec-icon">🔋</div>
+                                    <div class="spec-name">Battery</div>
+                                    <div class="spec-value">{vehicle.batteryCapacity}</div>
+                                </div>
+                                <div class="spec-card">
+                                    <div class="spec-icon">⚙️</div>
+                                    <div class="spec-name">Total Power</div>
+                                    <div class="spec-value">{vehicle.totalPower}</div>
+                                </div>
+                                <div class="spec-card">
+                                    <div class="spec-icon">🔩</div>
+                                    <div class="spec-name">Max Torque</div>
+                                    <div class="spec-value">{vehicle.maxTorque}</div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Drivetrain & Technical Details -->
+                        <div class="tech-section">
+                            <h3 class="specs-title">Technical Details</h3>
+                            <ul class="tech-list">
+                                <li>
+                                    <span class="tech-label">Engine / Motor</span>
+                                    <span class="tech-val">{vehicle.engine}</span>
+                                </li>
+                                <li>
+                                    <span class="tech-label">Drivetrain</span>
+                                    <span class="tech-val">{vehicle.drivetrain}</span>
+                                </li>
+                                <li>
+                                    <span class="tech-label">Transmission</span>
+                                    <span class="tech-val">{vehicle.transmission}</span>
+                                </li>
+                                <li>
+                                    <span class="tech-label">Fuel / Energy Source</span>
+                                    <span class="tech-val">{vehicle.fuelType}</span>
+                                </li>
+                                <li>
+                                    <span class="tech-label">Emission Standard</span>
+                                    <span class="tech-val">{vehicle.emission}</span>
+                                </li>
+                                <template lwc:if={vehicle.maxGrossWeight}>
+                                    <li>
+                                        <span class="tech-label">Max Gross Weight</span>
+                                        <span class="tech-val">{vehicle.maxGrossWeight}</span>
+                                    </li>
+                                </template>
+                            </ul>
+                        </div>
+
+                        <!-- CTA buttons -->
+                        <div class="action-buttons">
+                            <button class="btn btn-primary" onclick={handleScheduleTestDrive}>
+                                Schedule Test Drive
+                            </button>
+                            <button class="btn btn-secondary" onclick={handleRequestInfo}>
+                                Request Information
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </template>
+        </div>
+    </section>
+</template>

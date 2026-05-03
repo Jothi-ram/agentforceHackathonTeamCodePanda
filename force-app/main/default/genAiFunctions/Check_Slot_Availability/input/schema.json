@@ -1,0 +1,28 @@
+{
+  "required" : [ "dealershipId", "preferredDate", "timeSlot" ],
+  "unevaluatedProperties" : false,
+  "properties" : {
+    "dealershipId" : {
+      "title" : "Dealership Id",
+      "description" : "ID of the dealership. Only Use the dealership ID returned by the \"Find Nearest Dealership\" action. Do not ask the customer for this.",
+      "lightning:type" : "lightning__textType",
+      "lightning:isPII" : false,
+      "copilotAction:isUserInput" : false
+    },
+    "preferredDate" : {
+      "title" : "Preferred Date",
+      "description" : "Preferred test drive date (YYYY-MM-DD). The customer's preferred date in YYYY-MM-DD format. If the customer says \"tomorrow\" or \"next Monday\", calculate the actual date.",
+      "lightning:type" : "lightning__dateType",
+      "lightning:isPII" : false,
+      "copilotAction:isUserInput" : true
+    },
+    "timeSlot" : {
+      "title" : "Time Slot",
+      "description" : "Morning, Afternoon, or Evening. Must be exactly \"Morning\", \"Afternoon\", or \"Evening\". Convert any specific time the customer mentions into the corresponding slot.",
+      "lightning:type" : "lightning__textType",
+      "lightning:isPII" : false,
+      "copilotAction:isUserInput" : true
+    }
+  },
+  "lightning:type" : "lightning__objectType"
+}

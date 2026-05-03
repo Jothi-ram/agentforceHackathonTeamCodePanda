@@ -1,0 +1,28 @@
+{
+  "required" : [ "preferredDate", "zipCode" ],
+  "unevaluatedProperties" : false,
+  "properties" : {
+    "preferredDate" : {
+      "title" : "Preferred Date",
+      "description" : "Date object (convert from customer's text)",
+      "lightning:type" : "lightning__dateType",
+      "lightning:isPII" : false,
+      "copilotAction:isUserInput" : true
+    },
+    "timeOfDay" : {
+      "title" : "Time of Day",
+      "description" : "morning, afternoon, evening, or all",
+      "lightning:type" : "lightning__textType",
+      "lightning:isPII" : false,
+      "copilotAction:isUserInput" : false
+    },
+    "zipCode" : {
+      "title" : "Zip Code",
+      "description" : " Customer's zipCode from step2",
+      "lightning:type" : "lightning__textType",
+      "lightning:isPII" : false,
+      "copilotAction:isUserInput" : false
+    }
+  },
+  "lightning:type" : "lightning__objectType"
+}

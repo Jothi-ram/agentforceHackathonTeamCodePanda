@@ -1,0 +1,46 @@
+<template>
+    <div class="electro-container">
+        <!-- Navigation -->
+        <c-electro-navigation current-page={currentPage} onnavigate={handleNavigate}></c-electro-navigation>
+
+        <!-- Hero Section -->
+        <section class="hero-section" lwc:if={isHomePage}>
+            <div class="hero-content">
+                <h1 class="hero-title">
+                    <span class="gradient-text">Experience</span> The Future of Mobility
+                </h1>
+                <p class="hero-subtitle">Discover Electra's revolutionary electric vehicles</p>
+                <div class="hero-buttons">
+                    <button class="btn btn-primary" onclick={handleExploreVehicles}>Explore Vehicles</button>
+                    <button class="btn btn-secondary" onclick={handleTestDrive}>Test Drive</button>
+                </div>
+            </div>
+            <div class="hero-visual">
+                <div class="particle-animation"></div>
+            </div>
+        </section>
+
+        <!-- Main Content -->
+        <div class="content-wrapper">
+            <!-- Vehicle Showcase -->
+            <c-electro-vehicle-showcase lwc:if={isShowcasePage}
+                onvehicleselected={handleVehicleSelected}></c-electro-vehicle-showcase>
+
+            <!-- Vehicle Details -->
+            <c-electro-vehicle-details lwc:if={isDetailsPage} vehicle-id={selectedVehicleId}
+                onback={handleBackToShowcase}></c-electro-vehicle-details>
+
+            <!-- Dealership Finder -->
+            <c-electro-dealership-finder lwc:if={isDealershipPage}></c-electro-dealership-finder>
+
+            <!-- Customer Portal -->
+            <c-electro-customer-portal lwc:if={isPortalPage}></c-electro-customer-portal>
+
+            <!-- AgentForce Chat -->
+            <c-electro-agentforce-chat lwc:if={showChatbot} onclose={handleChatClose}></c-electro-agentforce-chat>
+        </div>
+
+        <!-- Footer -->
+        <c-electro-footer></c-electro-footer>
+    </div>
+</template>

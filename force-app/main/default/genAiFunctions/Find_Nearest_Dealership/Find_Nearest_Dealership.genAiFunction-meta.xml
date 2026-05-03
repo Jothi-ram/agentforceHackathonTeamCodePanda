@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<GenAiFunction xmlns="http://soap.sforce.com/2006/04/metadata">
+    <description>Finds the nearest Electra dealership based on customer zip code. Call this action after the customer provides their zipcode. This finds the nearest Electra Cars dealership. You must have collected the customer&apos;s 6-digit zi[code before calling this action. If the output shows dealershipFound is false, inform the customer that there is no nearby dealership and offer to have someone contact them. Do not proceed to slot checking if no dealership is found.</description>
+    <developerName>Find_Nearest_Dealership</developerName>
+    <invocationTarget>FindNearestDealership</invocationTarget>
+    <invocationTargetType>apex</invocationTargetType>
+    <isConfirmationRequired>false</isConfirmationRequired>
+    <isIncludeInProgressIndicator>true</isIncludeInProgressIndicator>
+    <localDeveloperName>Find_Nearest_Dealership</localDeveloperName>
+    <masterLabel>Find Nearest Dealership</masterLabel>
+    <progressIndicatorMessage>Fetching nearest dealership for you</progressIndicatorMessage>
+</GenAiFunction>

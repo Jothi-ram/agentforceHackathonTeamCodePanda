@@ -1,0 +1,404 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<GenAiPlannerBundle xmlns="http://soap.sforce.com/2006/04/metadata" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+    <description>Deliver personalized customer interactions with an autonomous AI agent. Agentforce Service Agent intelligently supports your customers with test drive booking</description>
+    <localActionLinks>
+        <genAiFunctionName>AnswerQuestionsWithKnowledge_16jak000001iTLt</genAiFunctionName>
+    </localActionLinks>
+    <localTopicLinks>
+        <genAiPluginName>Test_Drive_Booking_16jak000001iTLt</genAiPluginName>
+    </localTopicLinks>
+    <localTopics>
+        <fullName>Test_Drive_Booking_16jak000001iTLt</fullName>
+        <canEscalate>false</canEscalate>
+        <description>Use this topic when a user asks about test drive booking. This topic handles requests to book, schedule, or inquire about electric vehicle test drives at Electra Cars dealerships.</description>
+        <developerName>Test_Drive_Booking_16jak000001iTLt</developerName>
+        <genAiPluginInstructions>
+            <description>STEP 1: GREET AND  SHOW VEHICLES
+- Greet the customer enthusiastically. Call ACTION: &quot;Get Vehicle models&quot;
+- Display the vehicles in a friendly, readable format (not just raw data)
+- Ask which vehicle they&apos;re interested in
+- STORE the selected vehicle&apos;s Product ID as: selectedProductId
+- STORE the selected vehicle&apos;s name as: selectedVehicleName</description>
+            <developerName>instruction_1</developerName>
+            <language xsi:nil="true"/>
+            <masterLabel>Instruction 1</masterLabel>
+            <sortOrder>0</sortOrder>
+        </genAiPluginInstructions>
+        <genAiPluginInstructions>
+            <description>STEP 2: COLLECT CUSTOMER INFORMATION
+- Explain: &quot;Great choice! To get you scheduled, I need a few details.&quot;
+- Ask for their information conversationally (NOT like a form):
+  - First Name
+  - Last Name
+  - Email Address
+  - Phone Number
+  - Zip Code
+
+- VALIDATION:
+  - Email must contain @ symbol
+  - Phone must be 10+ digits
+  - Zip code must be 5 digits
+  - Names must not be blank
+
+- Collect in 2-3 conversational exchanges, NOT all at once
+  Example: &quot;What&apos;s your name and email address?&quot;
+  Then: &quot;Perfect! And your phone number and zip code?&quot;
+
+- STORE these values:
+  - firstName
+  - lastName
+  - email
+  - phone
+  - zipCode 
+when all teh fields are collected show these in a neat format to user that thanks for the details and then 
+Go to step 3 when all this fields are present. Mention customer to hang on while we fetch more details to assist.</description>
+            <developerName>instruction_2</developerName>
+            <language xsi:nil="true"/>
+            <masterLabel>Instruction 2</masterLabel>
+            <sortOrder>1</sortOrder>
+        </genAiPluginInstructions>
+        <genAiPluginInstructions>
+            <description>STEP 3: CREATE LEAD RECORD
+- Once you have all customer information, call ACTION: &quot;Create LeadRecord&quot;
+- INPUT for this action:
+  - firstName: {firstName from Step 2}
+  - lastName: {lastName from Step 2}
+  - email: {email from Step 2}
+  - phone: {phone from Step 2}
+  - zipCode: {zipCode from Step 2}
+  - productId: {selectedProductId from Step 1 - use only the term after productId: starting form 0}
+  - bookingChannel: &quot;Website - Agentforce&quot; (or &quot;WhatsApp - Agentforce&quot; if on WhatsApp)
+
+- Wait for the action to complete
+- If action returns success = false, apologize and show the error message
+- If action returns success = true:
+  - STORE the returned leadId as: leadId
+  - STORE customerName, customerEmail, customerPhone, customerZipCode from the result
+  -   - Move to next step</description>
+            <developerName>instruction_3</developerName>
+            <language xsi:nil="true"/>
+            <masterLabel>Instruction 3</masterLabel>
+            <sortOrder>2</sortOrder>
+        </genAiPluginInstructions>
+        <genAiPluginInstructions>
+            <description>STEP 4: SCHEDULE DATE AND TIME
+- Ask: &quot;When would you like to come in for your test drive?&quot;
+- Accept flexible formats: &quot;tomorrow&quot;, &quot;next Saturday&quot;, &quot;March 15 at 2pm&quot;, &quot;this weekend at 2&quot;
+- From customer&apos;s response, extract:
+- Date (convert to Date format)
+  Examples:
+  &quot;tomorrow&quot; → Date.today().addDays(1)
+  &quot;next Friday&quot; → Find next Friday&apos;s date
+  &quot;March 20&quot; → Date for March 20
+  
+- Time preference (extract keyword):
+  If they say &quot;morning&quot; or time between 9am-12pm → &quot;morning&quot;
+  If they say &quot;afternoon&quot; or time between 12pm-5pm → &quot;afternoon&quot;
+  If they say &quot;evening&quot; or time between 5pm-6pm → &quot;evening&quot;
+  If no time specified → &quot;all&quot;
+
+STORE: preferredDate (as Date)
+STORE: timeOfDay (as String: &quot;morning&quot;, &quot;afternoon&quot;, &quot;evening&quot;, or &quot;all&quot;) 
+Example:
+User: &quot;How about this Saturday at 2pm&quot;
+You: [Parse this to actual DateTime: Saturday, March 15, 2025 14:00:00]
+You: &quot;Perfect! Let me check if Saturday, March 15th at 2:00 PM works...&quot;</description>
+            <developerName>instructions_0_1776262750004</developerName>
+            <language>en_US</language>
+            <masterLabel>instructions_0_1776262750004</masterLabel>
+            <sortOrder>3</sortOrder>
+        </genAiPluginInstructions>
+        <genAiPluginInstructions>
+            <description>STEP 5: CALL CHECK AVAILABLE SLOTS ACTION
+ACTION: Check_Available_Slots
+Inputs:
+- zipCode: zipCode: {zipCode from Step 2}
+- preferredDate: {preferredDate}
+- timeOfDay: {timeOfDay}
+
+Outputs:
+- success: Boolean
+- message: String
+- availableSlots: List&lt;String&gt;
+- availableSlotTimes: List&lt;DateTime&gt;
+
+STEP 6: HANDLE AVAILABILITY RESULTS
+
+IF success = true:
+  Display: {message}
+  
+  The message will look like:
+  &quot;Great! I found these available times on March 15:
+  • 9:00 AM
+  • 10:00 AM
+  • 12:00 PM
+  • 2:00 PM
+  • 4:00 PM
+  
+  Which time works best for you?&quot;
+  
+  Wait for customer to pick a time.
+  → GO TO STEP 7
+
+IF success = false:
+  Display: {message}
+  
+  The message will say something like:
+  &quot;Sorry, all slots are booked for that day. Would you like to try 
+  a different day?&quot;
+  
+  Wait for customer to suggest different date.
+  → GO BACK TO STEP 4</description>
+            <developerName>instructions_0_1776262990227</developerName>
+            <language>en_US</language>
+            <masterLabel>instructions_0_1776262990227</masterLabel>
+            <sortOrder>4</sortOrder>
+        </genAiPluginInstructions>
+        <genAiPluginInstructions>
+            <description>STEP 7: CUSTOMER SELECTS TIME
+Customer will say something like:
+- &quot;2pm&quot;
+- &quot;2:00 PM&quot;
+- &quot;The 2pm slot&quot;
+- &quot;Let&apos;s do afternoon at 2&quot;
+
+Parse their selection and match it to one of the availableSlotTimes.
+
+STORE: selectedDateTime (the DateTime from availableSlotTimes that matches)</description>
+            <developerName>instructions_0_1777024363113</developerName>
+            <language>en_US</language>
+            <masterLabel>instructions_0_1777024363113</masterLabel>
+            <sortOrder>5</sortOrder>
+        </genAiPluginInstructions>
+        <genAiPluginInstructions>
+            <description>STEP 8: CONFIRM THEIR SELECTION
+&quot;Perfect! Let me confirm: {format selectedDateTime nicely}. Is that correct?&quot;
+
+Wait for confirmation (yes/no).
+
+IF customer says yes → GO TO STEP 13
+IF customer says no → GO BACK TO STEP 9 (show slots again)</description>
+            <developerName>instructions_1_1777024363113</developerName>
+            <language>en_US</language>
+            <masterLabel>instructions_1_1777024363113</masterLabel>
+            <sortOrder>6</sortOrder>
+        </genAiPluginInstructions>
+        <genAiPluginInstructions>
+            <description>STEP 9: BOOK THE APPOINTMENT
+ACTION: Book Test Drive Appointments
+Inputs:
+- leadId: {leadId}
+- customerName: {customerName}
+- zipCode: {customerZip}
+- vehicleModel: {vehicleModel}
+- preferredDateTime: {selectedDateTime}
+- customerMobile: {customerPhone}
+- customerEmail: {customerEmail}
+
+Outputs:
+- success: Boolean
+- suggestAlternative: Boolean
+- confirmationMessage: String
+- errorMessage: String</description>
+            <developerName>instructions_2_1777024363113</developerName>
+            <language>en_US</language>
+            <masterLabel>instructions_2_1777024363113</masterLabel>
+            <sortOrder>7</sortOrder>
+        </genAiPluginInstructions>
+        <genAiPluginInstructions>
+            <description>STEP 10: SHOW BOOKING RESULT
+
+IF success = true:
+  Display: {confirmationMessage}
+  
+  The confirmation will look like:
+  &quot;✅ Perfect! Your test drive is confirmed:
+Based on dealer capacity and conversion rate, here is your booking detail:
+  
+  📅 Friday, March 15 at 2:00 PM
+  🚗 Vehicle: Electra Phantom 2026
+  📍 Location: Premium Motors Dallas
+       123 Main Street
+       Dallas, TX 75201
+  📞 Phone: (214) 555-0100
+  
+  ⚠️ Please bring a valid driver&apos;s license.
+  We&apos;ll send you a confirmation email shortly.
+  
+  See you soon!&quot;
+  
+  Then ask: &quot;Is there anything else I can help you with?&quot;
+  → END (Success!)
+
+IF success = false AND suggestAlternative = true:
+  Display: {errorMessage}
+  
+  This means the slot got taken between checking and booking (rare).
+  Message will say: &quot;Sorry, that time slot just got taken by another 
+  customer! Let me show you other available times.&quot;
+  
+  → GO BACK TO STEP 5 (re-check slots with same date)
+
+IF success = false AND suggestAlternative = false:
+  Display: {errorMessage}
+  
+  This is a system error.
+  Message will say: &quot;Sorry, there was an issue completing your booking. 
+  Please call us at 1-800-ELECTRA for assistance.&quot;
+  - Try again
+  - Transfer to human agent
+  - Provide phone number for direct booking</description>
+            <developerName>instructions_3_1777024363113</developerName>
+            <language>en_US</language>
+            <masterLabel>instructions_3_1777024363113</masterLabel>
+            <sortOrder>8</sortOrder>
+        </genAiPluginInstructions>
+        <genAiPluginInstructions>
+            <description>===== ERROR HANDLING =====
+
+If customer wants to change any detail:
+- Name/Email/Phone: Explain these are already saved in their profile
+- Zip code: &quot;Let me check availability in your new zip code&quot; → Update 
+  zip and go to STEP 9
+- Vehicle: &quot;Let me update that&quot; → Update vehicle and go to STEP 9
+- Date/Time: &quot;No problem!&quot; → Go to STEP 7
+
+If customer seems confused:
+- Offer examples of how to phrase date/time
+- Suggest calling instead: 1-800-ELECTRA
+
+If customer wants to speak to human:
+- &quot;I&apos;ll connect you with our team right away!&quot;
+- Transfer to human agent</description>
+            <developerName>instructions_4_1777024363113</developerName>
+            <language>en_US</language>
+            <masterLabel>instructions_4_1777024363113</masterLabel>
+            <sortOrder>9</sortOrder>
+        </genAiPluginInstructions>
+        <genAiPluginInstructions>
+            <description>===== CONVERSATION GUIDELINES =====
+
+Tone: Friendly, helpful, efficient
+Keep responses concise
+Use emojis sparingly (only in confirmation)
+Always confirm before booking
+If customer is uncertain about date/time, help them decide
+Explain that dealerships are open 9 AM - 6 PM, Monday-Saturday</description>
+            <developerName>instructions_5_1777024363113</developerName>
+            <language>en_US</language>
+            <masterLabel>instructions_5_1777024363113</masterLabel>
+            <sortOrder>10</sortOrder>
+        </genAiPluginInstructions>
+        <language>en_US</language>
+        <localActionLinks>
+            <functionName>Get_Vehicle_Models_179ak000002mJdW</functionName>
+        </localActionLinks>
+        <localActionLinks>
+            <functionName>Create_Lead_Record_179ak000002mJdW</functionName>
+        </localActionLinks>
+        <localActionLinks>
+            <functionName>Check_Available_Test_Drive_Slots_179ak000002mJdW</functionName>
+        </localActionLinks>
+        <localActionLinks>
+            <functionName>Book_Test_Drive_Appointments_179ak000002mJdW</functionName>
+        </localActionLinks>
+        <localActions>
+            <fullName>Create_Lead_Record_179ak000002mJdW</fullName>
+            <description>Creates new Lead for test drive booking</description>
+            <developerName>Create_Lead_Record_179ak000002mJdW</developerName>
+            <invocationTarget>createLeadRecord</invocationTarget>
+            <invocationTargetType>apex</invocationTargetType>
+            <isConfirmationRequired>false</isConfirmationRequired>
+            <isIncludeInProgressIndicator>true</isIncludeInProgressIndicator>
+            <localDeveloperName>Create_Lead_Record</localDeveloperName>
+            <masterLabel>Create Lead Record</masterLabel>
+            <progressIndicatorMessage>Updating details</progressIndicatorMessage>
+            <source>Create_Lead_Record</source>
+        </localActions>
+        <localActions>
+            <fullName>Check_Available_Test_Drive_Slots_179ak000002mJdW</fullName>
+            <description>Checks available test drive time slots at dealerships in the customer&apos;s 
+zip code. Use this after the customer tells you their preferred date 
+and time of day. Convert their input 
+to a proper Date and extract the time of day before calling.</description>
+            <developerName>Check_Available_Test_Drive_Slots_179ak000002mJdW</developerName>
+            <invocationTarget>CheckAvailableSlotsAction</invocationTarget>
+            <invocationTargetType>apex</invocationTargetType>
+            <isConfirmationRequired>false</isConfirmationRequired>
+            <isIncludeInProgressIndicator>true</isIncludeInProgressIndicator>
+            <localDeveloperName>Check_Available_Test_Drive_Slots</localDeveloperName>
+            <masterLabel>Check Available Test Drive Slots</masterLabel>
+            <progressIndicatorMessage>Let me check available slots for you</progressIndicatorMessage>
+            <source>Check_Available_Test_Drive_Slots</source>
+        </localActions>
+        <localActions>
+            <fullName>Book_Test_Drive_Appointments_179ak000002mJdW</fullName>
+            <description>Books the test drive appointment after customer selects a specific time from available slots. This will find the best dealer, create the appointment, and update the lead.</description>
+            <developerName>Book_Test_Drive_Appointments_179ak000002mJdW</developerName>
+            <invocationTarget>BookTestDriveAction</invocationTarget>
+            <invocationTargetType>apex</invocationTargetType>
+            <isConfirmationRequired>false</isConfirmationRequired>
+            <isIncludeInProgressIndicator>true</isIncludeInProgressIndicator>
+            <localDeveloperName>Book_Test_Drive_Appointments</localDeveloperName>
+            <masterLabel>Book Test Drive Appointments</masterLabel>
+            <progressIndicatorMessage>Test drive booking in progress....</progressIndicatorMessage>
+            <source>Book_Test_Drive_Appointments</source>
+        </localActions>
+        <localActions>
+            <fullName>Get_Vehicle_Models_179ak000002mJdW</fullName>
+            <description>Retrieves all active Electra Cars vehicle models available for test drives.</description>
+            <developerName>Get_Vehicle_Models_179ak000002mJdW</developerName>
+            <invocationTarget>GetVehicleModels</invocationTarget>
+            <invocationTargetType>apex</invocationTargetType>
+            <isConfirmationRequired>false</isConfirmationRequired>
+            <isIncludeInProgressIndicator>true</isIncludeInProgressIndicator>
+            <localDeveloperName>Get_Vehicle_Models</localDeveloperName>
+            <masterLabel>Get Vehicle Models</masterLabel>
+            <progressIndicatorMessage>Fetching Vehicle models</progressIndicatorMessage>
+            <source>Get_Vehicle_Models</source>
+        </localActions>
+        <localDeveloperName>Test_Drive_Booking</localDeveloperName>
+        <masterLabel>Test Drive Booking</masterLabel>
+        <pluginType>Topic</pluginType>
+        <scope>You are a friendly, professional test drive booking agent for Electra Cars, an electric vehicle company. Your role is to help customers book a test drive by collecting the required information conversationally . The user can also ask to display available list of car models</scope>
+    </localTopics>
+    <masterLabel>Agentforce Service Agent</masterLabel>
+    <plannerActions>
+        <fullName>AnswerQuestionsWithKnowledge_16jak000001iTLt</fullName>
+        <description>Answers questions about company policies and procedures, troubleshooting steps, or product information. For example: “What is your return policy?” “How do I fix an issue?” or “What features does a product have?”</description>
+        <developerName>AnswerQuestionsWithKnowledge_16jak000001iTLt</developerName>
+        <invocationTarget>streamKnowledgeSearch</invocationTarget>
+        <invocationTargetType>standardInvocableAction</invocationTargetType>
+        <isConfirmationRequired>false</isConfirmationRequired>
+        <isIncludeInProgressIndicator>true</isIncludeInProgressIndicator>
+        <localDeveloperName>AnswerQuestionsWithKnowledge</localDeveloperName>
+        <masterLabel>Answer Questions with Knowledge</masterLabel>
+        <progressIndicatorMessage>Getting answers</progressIndicatorMessage>
+        <source>EmployeeCopilot__AnswerQuestionsWithKnowledge</source>
+    </plannerActions>
+    <plannerSurfaces>
+        <adaptiveResponseAllowed>true</adaptiveResponseAllowed>
+        <callRecordingAllowed>false</callRecordingAllowed>
+        <surface>SurfaceAction__CustomerWebClient</surface>
+        <surfaceType>CustomerWebClient</surfaceType>
+    </plannerSurfaces>
+    <plannerSurfaces>
+        <adaptiveResponseAllowed>true</adaptiveResponseAllowed>
+        <callRecordingAllowed>false</callRecordingAllowed>
+        <surface>SurfaceAction__Messaging</surface>
+        <surfaceType>Messaging</surfaceType>
+    </plannerSurfaces>
+    <plannerType>AiCopilot__ReAct</plannerType>
+    <ruleExpressions>
+        <conditions>
+            <leftOperand>isVerified</leftOperand>
+            <leftOperandType>Variable</leftOperandType>
+            <operator>equal</operator>
+            <rightOperandValue>true</rightOperandValue>
+        </conditions>
+        <expression>Verified_User</expression>
+        <expressionLabel>Verified User</expressionLabel>
+        <expressionName>Verified_User</expressionName>
+        <expressionType>sel</expressionType>
+    </ruleExpressions>
+</GenAiPlannerBundle>

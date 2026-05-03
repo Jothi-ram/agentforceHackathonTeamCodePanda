@@ -1,0 +1,55 @@
+<template>
+    <nav class="navbar">
+        <div class="navbar-container">
+            <div class="logo">
+                <div class="logo-icon">⚡</div>
+                <span class="logo-text">ELECTRA</span>
+            </div>
+
+            <ul class="nav-menu" lwc:if={showDesktopMenu}>
+                <li class="nav-item">
+                    <a href="javascript:void(0);" class="nav-link {activeClass}" data-page="home"
+                        onclick={handleNavClick}>
+                        Home
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="javascript:void(0);" class="nav-link" data-page="showcase" onclick={handleNavClick}>
+                        Vehicles
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="javascript:void(0);" class="nav-link" data-page="dealership" onclick={handleNavClick}>
+                        Dealerships
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="javascript:void(0);" class="nav-link" data-page="portal" onclick={handleNavClick}>
+                        Account
+                    </a>
+                </li>
+            </ul>
+
+            <button class="mobile-toggle" lwc:if={showMobileToggle} onclick={toggleMobileMenu}>
+                <span class="hamburger"></span>
+            </button>
+        </div>
+
+        <div class="mobile-menu" lwc:if={showMobileMenuPanel}>
+            <ul class="mobile-nav-menu">
+                <li class="mobile-nav-item">
+                    <a href="javascript:void(0);" data-page="home" onclick={handleNavClick}>Home</a>
+                </li>
+                <li class="mobile-nav-item">
+                    <a href="javascript:void(0);" data-page="showcase" onclick={handleNavClick}>Vehicles</a>
+                </li>
+                <li class="mobile-nav-item">
+                    <a href="javascript:void(0);" data-page="dealership" onclick={handleNavClick}>Dealerships</a>
+                </li>
+                <li class="mobile-nav-item">
+                    <a href="javascript:void(0);" data-page="portal" onclick={handleNavClick}>Account</a>
+                </li>
+            </ul>
+        </div>
+    </nav>
+</template>

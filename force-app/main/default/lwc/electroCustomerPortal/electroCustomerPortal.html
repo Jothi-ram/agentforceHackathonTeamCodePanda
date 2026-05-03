@@ -1,0 +1,175 @@
+<template>
+    <section class="customer-portal">
+        <div class="portal-container">
+            <h2 class="section-title">My Account Portal</h2>
+            <p class="section-subtitle">Manage your Electra account and bookings</p>
+
+            <div class="portal-grid">
+                <!-- Dashboard Summary Cards -->
+                <div class="summary-cards">
+                    <div class="summary-card">
+                        <div class="card-icon">🗓️</div>
+                        <div class="card-content">
+                            <div class="card-label">Upcoming Appointments</div>
+                            <div class="card-value">2</div>
+                        </div>
+                    </div>
+
+                    <div class="summary-card">
+                        <div class="card-icon">❤️</div>
+                        <div class="card-content">
+                            <div class="card-label">Favorite Vehicles</div>
+                            <div class="card-value">3</div>
+                        </div>
+                    </div>
+
+                    <div class="summary-card">
+                        <div class="card-icon">📋</div>
+                        <div class="card-content">
+                            <div class="card-label">Quotes</div>
+                            <div class="card-value">1</div>
+                        </div>
+                    </div>
+
+                    <div class="summary-card">
+                        <div class="card-icon">💳</div>
+                        <div class="card-content">
+                            <div class="card-label">Financing Options</div>
+                            <div class="card-value">5</div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Main Content Area -->
+                <div class="portal-content">
+                    <div class="tabs">
+                        <button class="tab-btn active" onclick={handleTabClick} data-tab="appointments">
+                            My Appointments
+                        </button>
+                        <button class="tab-btn" onclick={handleTabClick} data-tab="favorites">
+                            Favorite Vehicles
+                        </button>
+                        <button class="tab-btn" onclick={handleTabClick} data-tab="recommendations">
+                            Recommendations
+                        </button>
+                        <button class="tab-btn" onclick={handleTabClick} data-tab="settings">
+                            Account Settings
+                        </button>
+                    </div>
+
+                    <!-- Appointments Tab -->
+                    <div class="tab-content" lwc:if={isAppointmentsTab}>
+                        <h3>Upcoming Appointments</h3>
+                        <div class="appointments-list">
+                            <div class="appointment-item">
+                                <div class="appointment-time">
+                                    <div class="date">April 22</div>
+                                    <div class="time">2:00 PM</div>
+                                </div>
+                                <div class="appointment-details">
+                                    <h4>Electra Storm Test Drive</h4>
+                                    <p>📍 Electra Motors Downtown</p>
+                                    <p>Status: <span class="status-badge pending">Pending</span></p>
+                                </div>
+                                <button class="btn-action">Reschedule</button>
+                            </div>
+
+                            <div class="appointment-item">
+                                <div class="appointment-time">
+                                    <div class="date">April 28</div>
+                                    <div class="time">10:00 AM</div>
+                                </div>
+                                <div class="appointment-details">
+                                    <h4>Electra Beast Test Drive</h4>
+                                    <p>📍 Electra Motors Brooklyn</p>
+                                    <p>Status: <span class="status-badge confirmed">Confirmed</span></p>
+                                </div>
+                                <button class="btn-action">Details</button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Favorites Tab -->
+                    <div class="tab-content" lwc:if={isFavoritesTab}>
+                        <h3>My Favorite Vehicles</h3>
+                        <div class="favorites-grid">
+                            <div class="favorite-item">
+                                <div class="vehicle-image">⚡</div>
+                                <h4>Electra Storm</h4>
+                                <p>Performance Sedan</p>
+                                <button class="btn-small">View Details</button>
+                            </div>
+                            <div class="favorite-item">
+                                <div class="vehicle-image">🏎️</div>
+                                <h4>Electra Beast</h4>
+                                <p>Electric SUV</p>
+                                <button class="btn-small">View Details</button>
+                            </div>
+                            <div class="favorite-item">
+                                <div class="vehicle-image">👑</div>
+                                <h4>Electra Prime</h4>
+                                <p>Luxury Sedan</p>
+                                <button class="btn-small">View Details</button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Recommendations Tab -->
+                    <div class="tab-content" lwc:if={isRecommendationsTab}>
+                        <h3>Personalized Recommendations</h3>
+                        <p>Based on your browsing history and preferences:</p>
+                        <div class="recommendations-list">
+                            <div class="recommendation-item">
+                                <div class="rec-icon">🎯</div>
+                                <div class="rec-content">
+                                    <h4>Perfect Match: Electra Volt</h4>
+                                    <p>Based on your interest in sports coupes and performance vehicles</p>
+                                </div>
+                                <button class="btn-small">Explore</button>
+                            </div>
+                            <div class="recommendation-item">
+                                <div class="rec-icon">💡</div>
+                                <div class="rec-content">
+                                    <h4>New Financing Options Available</h4>
+                                    <p>We have new lease and financing options that match your needs</p>
+                                </div>
+                                <button class="btn-small">View Options</button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Settings Tab -->
+                    <div class="tab-content" lwc:if={isSettingsTab}>
+                        <h3>Account Settings</h3>
+                        <div class="settings-form">
+                            <div class="form-group">
+                                <label>Full Name</label>
+                                <input type="text" value="John Doe" placeholder="Full Name">
+                            </div>
+                            <div class="form-group">
+                                <label>Email Address</label>
+                                <input type="email" value="john@example.com" placeholder="Email Address">
+                            </div>
+                            <div class="form-group">
+                                <label>Phone Number</label>
+                                <input type="tel" value="+1 (555) 000-0000" placeholder="Phone Number">
+                            </div>
+                            <div class="form-group">
+                                <label>Preferences</label>
+                                <div class="checkbox-group">
+                                    <input type="checkbox" id="marketing" checked>
+                                    <label for="marketing">Receive marketing emails</label>
+                                </div>
+                                <div class="checkbox-group">
+                                    <input type="checkbox" id="offers" checked>
+                                    <label for="offers">Receive special offers</label>
+                                </div>
+                            </div>
+                            <button class="btn btn-primary">Save Changes</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+</template>

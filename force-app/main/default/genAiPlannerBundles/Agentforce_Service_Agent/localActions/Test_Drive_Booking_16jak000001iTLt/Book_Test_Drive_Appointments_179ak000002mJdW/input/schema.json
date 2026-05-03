@@ -1,0 +1,57 @@
+{
+  "required" : [ "customerEmail", "customerMobile", "customerName", "leadId", "preferredDateTime", "vehicleModel", "zipCode" ],
+  "unevaluatedProperties" : false,
+  "properties" : {
+    "customerEmail" : {
+      "title" : "Customer Email",
+      "description" : "Customer's email from step2 ",
+      "lightning:type" : "lightning__textType",
+      "lightning:isPII" : false,
+      "copilotAction:isUserInput" : false
+    },
+    "customerMobile" : {
+      "title" : "Customer Mobile",
+      "description" : "Customer's mobile from step2",
+      "lightning:type" : "lightning__textType",
+      "lightning:isPII" : false,
+      "copilotAction:isUserInput" : false
+    },
+    "customerName" : {
+      "title" : "Customer Name",
+      "description" : "Customer's name from step2 (firstName +lastName)",
+      "lightning:type" : "lightning__textType",
+      "lightning:isPII" : false,
+      "copilotAction:isUserInput" : false
+    },
+    "leadId" : {
+      "title" : "Lead ID",
+      "description" : "The Lead ID from earlier in conversation",
+      "lightning:type" : "lightning__textType",
+      "lightning:isPII" : false,
+      "copilotAction:isUserInput" : false
+    },
+    "preferredDateTime" : {
+      "title" : "Preferred Date/Time",
+      "description" : " Exact DateTime customer selected",
+      "lightning:type" : "lightning__dateTimeStringType",
+      "lightning:isPII" : false,
+      "copilotAction:isUserInput" : false
+    },
+    "vehicleModel" : {
+      "title" : "Vehicle Model",
+      "description" : "Vehicle model that customer wants to test drive",
+      "lightning:type" : "lightning__textType",
+      "lightning:isPII" : false,
+      "copilotAction:isUserInput" : false
+    },
+    "zipCode" : {
+      "title" : "Zip Code",
+      "description" : " Customer's zip code",
+      "lightning:type" : "lightning__textType",
+      "lightning:isPII" : false,
+      "copilotAction:isUserInput" : false
+    }
+  },
+  "lightning:type" : "lightning__objectType",
+  "lightning:textIndexed" : true
+}

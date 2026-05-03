@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<GenAiFunction xmlns="http://soap.sforce.com/2006/04/metadata">
+    <description>Checks if a test drive time slot is available at a dealership. Call this action after the customer provides a preferred date and time slot. You must have the dealership ID from the previous &quot;Find Nearest Dealership&quot; action. The time slot must be exactly one of: &quot;Morning&quot;, &quot;Afternoon&quot;, or &quot;Evening&quot;. If the customer gives a specific time, convert it: before 12 PM = &quot;Morning&quot;, 12 PM to 4 PM = &quot;Afternoon&quot;, after 4 PM = &quot;Evening&quot;. If the slot is unavailable, share the alternative slots with the customer and ask them to pick a different slot or date. Re-call this action with their new choice.</description>
+    <developerName>Check_Slot_Availability</developerName>
+    <invocationTarget>CheckSlotAvailability</invocationTarget>
+    <invocationTargetType>apex</invocationTargetType>
+    <isConfirmationRequired>false</isConfirmationRequired>
+    <isIncludeInProgressIndicator>true</isIncludeInProgressIndicator>
+    <localDeveloperName>Check_Slot_Availability</localDeveloperName>
+    <masterLabel>Check Slot Availability</masterLabel>
+    <progressIndicatorMessage>Checking time slots</progressIndicatorMessage>
+</GenAiFunction>

@@ -1,0 +1,68 @@
+<template>
+    <section class="vehicle-showcase">
+        <div class="showcase-container">
+            <h2 class="section-title">Our Collection</h2>
+            <p class="section-subtitle">Discover the future of electric mobility</p>
+
+            <!-- Loading state -->
+            <template lwc:if={isLoading}>
+                <div class="loading-container">
+                    <div class="loading-spinner"></div>
+                    <p class="loading-text">Loading vehicles from Salesforce...</p>
+                </div>
+            </template>
+
+            <!-- Error state -->
+            <template lwc:elseif={error}>
+                <div class="error-container">
+                    <p class="error-icon">⚠️</p>
+                    <p class="error-title">Unable to load vehicles</p>
+                    <p class="error-message">{errorMessage}</p>
+                </div>
+            </template>
+
+            <!-- Vehicle grid -->
+            <template lwc:elseif={hasVehicles}>
+                <div class="vehicles-grid">
+                    <template for:each={vehicles} for:item="vehicle">
+                        <div key={vehicle.id} class="vehicle-card" onclick={handleVehicleSelect}
+                            data-vehicle-id={vehicle.id}>
+                            <div class="vehicle-image-wrapper">
+                                <div class="vehicle-image" style="--color: {vehicle.color}">
+                                    <div class="image-placeholder">{vehicle.emoji}</div>
+                                </div>
+                                <div class="vehicle-badge">{vehicle.fuelType}</div>
+                            </div>
+                            <div class="vehicle-info">
+                                <h3 class="vehicle-name">{vehicle.name}</h3>
+                                <p class="vehicle-variant">{vehicle.variantName}</p>
+                                <p class="vehicle-type">{vehicle.type}</p>
+                                <div class="vehicle-specs">
+                                    <span class="spec">
+                                        <strong>Range:</strong> {vehicle.range}
+                                    </span>
+                                    <span class="spec">
+                                        <strong>0-100:</strong> {vehicle.acceleration}
+                                    </span>
+                                </div>
+                                <div class="vehicle-topspeed">Top Speed: {vehicle.topSpeed}</div>
+                            </div>
+                            <div class="vehicle-overlay">
+                                <button class="btn-explore">Explore →</button>
+                            </div>
+                        </div>
+                    </template>
+                </div>
+            </template>
+
+            <!-- Empty state -->
+            <template lwc:else>
+                <div class="empty-container">
+                    <p class="empty-icon">🚗</p>
+                    <p class="empty-title">No vehicles found</p>
+                    <p class="empty-message">No VehicleDefinition records are available in this org.</p>
+                </div>
+            </template>
+        </div>
+    </section>
+</template>
