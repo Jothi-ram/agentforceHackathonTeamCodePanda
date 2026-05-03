@@ -3,12 +3,8 @@
  * Provides AuraEnabled methods to query VehicleDefinition and Vehicle
  * Salesforce objects for the Electra Cars LWC components.
  */
-public with sharing class VehicleController {
+public without sharing class VehicleController {
 
-    /**
-     * Returns the list of VehicleDefinition records for the vehicle showcase grid.
-     * Uses WITH SECURITY_ENFORCED to respect FLS/CRUD permissions.
-     */
     @AuraEnabled(cacheable=true)
     public static List<VehicleDefinition> getVehicles() {
         return [
@@ -27,16 +23,11 @@ public with sharing class VehicleController {
                    TransmissionType,
                    ModelCode
             FROM   VehicleDefinition
-            WITH   SECURITY_ENFORCED
             ORDER  BY Name
             LIMIT  50
         ];
     }
 
-    /**
-     * Returns detailed fields for a single VehicleDefinition record.
-     * @param vehicleId  The Salesforce record Id of the VehicleDefinition.
-     */
     @AuraEnabled(cacheable=true)
     public static VehicleDefinition getVehicleById(Id vehicleId) {
         if (vehicleId == null) {
@@ -70,9 +61,40 @@ public with sharing class VehicleController {
                    EmissionStandard
             FROM   VehicleDefinition
             WHERE  Id = :vehicleId
-            WITH   SECURITY_ENFORCED
             LIMIT  1
         ];
         return results.isEmpty() ? null : results[0];
+    }
+
+    @AuraEnabled(cacheable=true)
+    public static List<Account> getDealerships(String searchTerm) {
+        String likeQuery = String.isBlank(searchTerm)
+            ? '%'
+            : '%' + String.escapeSingleQuotes(searchTerm.trim()) + '%';
+        return [
+            SELECT Id,
+                   Name,
+                   Phone,
+                   Fax,
+                   Website,
+                   Description,
+                   BillingStreet,
+                   BillingCity,
+                   BillingState,
+                   BillingPostalCode,
+                   BillingCountry,
+                   Type,
+                   Rating
+            FROM   Account
+            WHERE  (Name LIKE :likeQuery
+                    OR BillingCity LIKE :likeQuery
+                    OR BillingState LIKE :likeQuery)
+            AND    (Type = 'Partner'
+                    OR Name LIKE '%Electra%'
+                    OR Name LIKE '%Dealer%'
+                    OR Name LIKE '%Showroom%')
+            ORDER  BY Name
+            LIMIT  50
+        ];
     }
 }

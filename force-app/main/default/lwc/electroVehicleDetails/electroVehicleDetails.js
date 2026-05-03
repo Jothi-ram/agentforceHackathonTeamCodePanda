@@ -74,19 +74,4 @@ export default class ElectroVehicleDetails extends LightningElement {
   handleBack() {
     this.dispatchEvent(new CustomEvent('back'));
   }
-
-  handleScheduleTestDrive() {
-    this.dispatchEvent(new CustomEvent('test-drive', {
-      detail: { vehicleId: this.vehicleId }
-    }));
-  }
-
-  handleRequestInfo() {
-    this.dispatchEvent(new CustomEvent('requestinfo', {
-      detail: {
-        vehicleId:   this.vehicleId,
-        vehicleName: this.vehicle ? this.vehicle.name : ''
-      }
-    }));
-  }
 }

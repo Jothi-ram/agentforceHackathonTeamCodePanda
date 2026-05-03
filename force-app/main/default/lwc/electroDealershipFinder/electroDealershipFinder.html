@@ -2,64 +2,84 @@
     <section class="dealership-section">
         <div class="dealership-container">
             <h2 class="section-title">Find Your Nearest Dealership</h2>
-            <p class="section-subtitle">Visit an authorized Electra dealership to experience our vehicles</p>
+            <p class="section-subtitle">Visit an authorized Electra showroom to experience our vehicles</p>
 
             <div class="search-bar">
-                <input type="text" placeholder="Enter your city or ZIP code..." value={searchQuery}
-                    onchange={handleSearchChange} class="search-input">
+                <input type="text" placeholder="Search by city or showroom name..."
+                    value={searchQuery}
+                    oninput={handleSearchChange}
+                    onkeydown={handleKeyDown}
+                    class="search-input" />
                 <button class="search-btn" onclick={handleSearch}>Search</button>
             </div>
 
-            <div class="dealerships-grid">
-                <template for:each={dealerships} for:item="dealer" for:index="index">
-                    <div key={dealer.id} class="dealership-card">
-                        <div class="dealer-header">
-                            <h3 class="dealer-name">{dealer.name}</h3>
-                            <div class="dealer-rating">
-                                <span class="rating-stars">⭐ {dealer.rating}</span>
-                            </div>
-                        </div>
-
-                        <div class="dealer-info">
-                            <div class="info-item">
-                                <span class="info-icon">📍</span>
-                                <span>{dealer.address}</span>
-                            </div>
-                            <div class="info-item">
-                                <span class="info-icon">📞</span>
-                                <span>{dealer.phone}</span>
-                            </div>
-                            <div class="info-item">
-                                <span class="info-icon">🕒</span>
-                                <span>{dealer.hours}</span>
-                            </div>
-                            <div class="info-item">
-                                <span class="info-icon">📏</span>
-                                <span>{dealer.distance} miles away</span>
-                            </div>
-                        </div>
-
-                        <div class="dealer-features">
-                            <span class="feature-badge">Test Drive</span>
-                            <span class="feature-badge">Financing</span>
-                            <span class="feature-badge">Service</span>
-                        </div>
-
-                        <button class="btn-contact" onclick={handleContactDealer} data-dealer-id={dealer.id}>
-                            Contact Dealership →
-                        </button>
-                    </div>
-                </template>
-            </div>
-
-            <div class="map-section">
-                <h3 class="map-title">Dealership Locations Map</h3>
-                <div class="map-placeholder">
-                    <div class="map-icon">🗺️</div>
-                    <p>Interactive map with all dealership locations</p>
-                    <p class="map-note">This section would integrate Google Maps or Mapbox API</p>
+            <!-- Loading -->
+            <template lwc:if={isLoading}>
+                <div class="loading-container">
+                    <div class="loading-spinner"></div>
+                    <p class="loading-text">Loading dealerships...</p>
                 </div>
-            </div>
+            </template>
+
+            <!-- Error -->
+            <template lwc:elseif={error}>
+                <div class="error-container">
+                    <p class="error-icon">⚠️</p>
+                    <p class="error-title">Unable to load dealerships</p>
+                    <p class="error-message">{error}</p>
+                </div>
+            </template>
+
+            <!-- Results -->
+            <template lwc:elseif={hasDealerships}>
+                <div class="dealerships-grid">
+                    <template for:each={dealerships} for:item="dealer">
+                        <div key={dealer.id} class="dealership-card">
+                            <div class="dealer-header">
+                                <h3 class="dealer-name">{dealer.name}</h3>
+                                <template lwc:if={dealer.rating}>
+                                    <span class="dealer-rating">⭐ {dealer.rating}</span>
+                                </template>
+                            </div>
+                            <div class="dealer-info">
+                                <div class="info-item">
+                                    <span class="info-icon">📍</span>
+                                    <span>{dealer.address}</span>
+                                </div>
+                                <template lwc:if={dealer.phone}>
+                                    <div class="info-item">
+                                        <span class="info-icon">📞</span>
+                                        <span>{dealer.phone}</span>
+                                    </div>
+                                </template>
+                                <template lwc:if={dealer.website}>
+                                    <div class="info-item">
+                                        <span class="info-icon">🌐</span>
+                                        <a class="dealer-link" href={dealer.website} target="_blank" rel="noopener noreferrer">{dealer.website}</a>
+                                    </div>
+                                </template>
+                            </div>
+                            <template lwc:if={dealer.description}>
+                                <p class="dealer-description">{dealer.description}</p>
+                            </template>
+                            <div class="dealer-features">
+                                <span class="feature-badge">Test Drive</span>
+                                <span class="feature-badge">Financing</span>
+                                <span class="feature-badge">Service</span>
+                            </div>
+                        </div>
+                    </template>
+                </div>
+            </template>
+
+            <!-- Empty -->
+            <template lwc:else>
+                <div class="empty-container">
+                    <p class="empty-icon">🏪</p>
+                    <p class="empty-title">No dealerships found</p>
+                    <p class="empty-message">Try a different search term.</p>
+                </div>
+            </template>
         </div>
     </section>
 </template>

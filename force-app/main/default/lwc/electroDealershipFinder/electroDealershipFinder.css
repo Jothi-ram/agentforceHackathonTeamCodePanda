@@ -121,15 +121,21 @@
 }
 
 .dealer-rating {
-    display: flex;
-    align-items: center;
-}
-
-.rating-stars {
-    font-size: 14px;
+    font-size: 13px;
     color: #00d4ff;
     font-weight: 600;
     white-space: nowrap;
+}
+
+.dealer-link {
+    color: #00d4ff;
+    text-decoration: none;
+    font-size: 13px;
+    word-break: break-all;
+}
+
+.dealer-link:hover {
+    text-decoration: underline;
 }
 
 .dealer-info {
@@ -157,6 +163,50 @@
     flex-wrap: wrap;
 }
 
+.dealer-description {
+    font-size: 13px;
+    color: #708090;
+    line-height: 1.6;
+    margin: 0;
+    font-style: italic;
+    border-left: 2px solid rgba(0,212,255,0.3);
+    padding-left: 12px;
+}
+
+/* Loading / Error / Empty states */
+.loading-container, .error-container, .empty-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 80px 20px;
+    gap: 16px;
+    text-align: center;
+    background: rgba(255,255,255,0.02);
+    border: 1px solid rgba(255,255,255,0.07);
+    border-radius: 16px;
+}
+
+.loading-spinner {
+    width: 52px;
+    height: 52px;
+    border: 4px solid rgba(0, 212, 255, 0.15);
+    border-top-color: #00d4ff;
+    border-radius: 50%;
+    animation: spin 0.9s linear infinite;
+}
+
+@keyframes spin { to { transform: rotate(360deg); } }
+
+.loading-text, .error-message, .empty-message {
+    font-size: 14px;
+    color: #a0a0a0;
+    margin: 0;
+}
+
+.error-icon, .empty-icon { font-size: 44px; margin: 0; }
+.error-title, .empty-title { font-size: 18px; font-weight: 700; color: #fff; margin: 0; }
+
 .feature-badge {
     background: rgba(0, 212, 255, 0.1);
     border: 1px solid rgba(0, 212, 255, 0.3);
@@ -167,27 +217,6 @@
     font-weight: 500;
     text-transform: uppercase;
     letter-spacing: 0.5px;
-}
-
-.btn-contact {
-    background: linear-gradient(135deg, #00d4ff 0%, #0084d4 100%);
-    color: #000;
-    border: none;
-    padding: 12px 24px;
-    border-radius: 50px;
-    font-weight: 600;
-    cursor: pointer;
-    font-size: 13px;
-    text-transform: uppercase;
-    letter-spacing: 1px;
-    transition: all 0.3s ease;
-    width: 100%;
-    margin-top: auto;
-}
-
-.btn-contact:hover {
-    transform: translateY(-2px);
-    box-shadow: 0 8px 24px rgba(0, 212, 255, 0.3);
 }
 
 .map-section {

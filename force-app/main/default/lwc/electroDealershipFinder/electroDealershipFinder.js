@@ -1,81 +1,63 @@
-import { LightningElement } from 'lwc';
+import { LightningElement, track } from 'lwc';
+import getDealerships from '@salesforce/apex/VehicleController.getDealerships';
 
 export default class ElectroDealershipFinder extends LightningElement {
+  @track dealerships = [];
+  @track isLoading = true;
+  @track error;
   searchQuery = '';
 
-  dealerships = [
-    {
-      id: '1',
-      name: 'Electra Motors Downtown',
-      address: '123 Main Street, New York, NY 10001',
-      phone: '+1 (212) 555-0100',
-      hours: 'Mon-Fri: 9AM-8PM, Sat: 10AM-6PM',
-      distance: '0.5',
-      rating: '4.8'
-    },
-    {
-      id: '2',
-      name: 'Electra Motors Midtown',
-      address: '456 Park Avenue, New York, NY 10022',
-      phone: '+1 (212) 555-0101',
-      hours: 'Mon-Fri: 9AM-8PM, Sat: 10AM-6PM',
-      distance: '2.3',
-      rating: '4.7'
-    },
-    {
-      id: '3',
-      name: 'Electra Motors Brooklyn',
-      address: '789 Columbia Heights, Brooklyn, NY 11231',
-      phone: '+1 (718) 555-0102',
-      hours: 'Mon-Fri: 10AM-7PM, Sat: 11AM-5PM',
-      distance: '4.8',
-      rating: '4.9'
-    },
-    {
-      id: '4',
-      name: 'Electra Motors Queens',
-      address: '321 Queens Boulevard, Queens, NY 11375',
-      phone: '+1 (718) 555-0103',
-      hours: 'Mon-Fri: 9AM-8PM, Sat: 10AM-6PM',
-      distance: '8.2',
-      rating: '4.6'
-    },
-    {
-      id: '5',
-      name: 'Electra Motors Westchester',
-      address: '654 Central Avenue, Yonkers, NY 10701',
-      phone: '+1 (914) 555-0104',
-      hours: 'Mon-Fri: 9AM-8PM, Sat: 10AM-6PM',
-      distance: '15.3',
-      rating: '4.7'
-    },
-    {
-      id: '6',
-      name: 'Electra Motors New Jersey',
-      address: '987 Route 3, Jersey City, NJ 07310',
-      phone: '+1 (201) 555-0105',
-      hours: 'Mon-Fri: 9AM-8PM, Sat: 10AM-6PM',
-      distance: '5.6',
-      rating: '4.8'
-    }
-  ];
+  connectedCallback() {
+    this.loadDealerships('');
+  }
+
+  loadDealerships(searchTerm) {
+    this.isLoading = true;
+    this.error = undefined;
+    getDealerships({ searchTerm })
+      .then((data) => {
+        this.dealerships = data.map((d) => {
+          const parts = [
+            d.BillingStreet,
+            d.BillingCity,
+            d.BillingState,
+            d.BillingPostalCode,
+            d.BillingCountry
+          ].filter(Boolean);
+          return {
+            id:          d.Id,
+            name:        d.Name,
+            phone:       d.Phone    || '—',
+            website:     d.Website  || '',
+            description: d.Description || '',
+            address:     parts.length ? parts.join(', ') : 'Address not available',
+            type:        d.Type     || '',
+            rating:      d.Rating   || ''
+          };
+        });
+        this.isLoading = false;
+      })
+      .catch((err) => {
+        this.error = err.body ? err.body.message : JSON.stringify(err);
+        this.isLoading = false;
+      });
+  }
+
+  get hasDealerships() {
+    return this.dealerships && this.dealerships.length > 0;
+  }
 
   handleSearchChange(event) {
     this.searchQuery = event.target.value;
   }
 
   handleSearch() {
-    if (!this.searchQuery) {
-      alert('Please enter a city or ZIP code');
-      return;
-    }
-    // In a real scenario, you would filter dealerships by location
-    alert(`Searching for dealerships near: ${this.searchQuery}`);
+    this.loadDealerships(this.searchQuery);
   }
 
-  handleContactDealer(event) {
-    const dealerId = event.currentTarget.dataset.dealerId;
-    const dealer = this.dealerships.find(d => d.id === dealerId);
-    alert(`Contacting ${dealer.name}. Form or contact details would be displayed here.`);
+  handleKeyDown(event) {
+    if (event.key === 'Enter') {
+      this.loadDealerships(this.searchQuery);
+    }
   }
 }
