@@ -38,13 +38,6 @@ This Salesforce-based solution leverages **Agentforce** to deliver an intelligen
 - **Zip Code Tracking**: Store customer location data for dealership assignment
 - **Discovery Assessment**: Evaluate customer needs and interests
 
-### 👥 Community Portal
-- **User Registration**: Self-service account creation with email verification
-- **Authentication**: Secure login and password management
-- **Password Recovery**: Forgot password functionality
-- **User Profile Management**: Customers can view and manage their profiles
-- **Role-Based Access**: Different portal experiences for customers and staff
-
 ### 📞 Omnichannel Routing
 - **Work Queue Management**: Efficiently route customer requests to available staff
 - **Multi-Channel Support**: Routes from web, email, and other channels
