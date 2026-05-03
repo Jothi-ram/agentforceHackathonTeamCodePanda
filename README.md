@@ -137,44 +137,11 @@ npm run test:unit:coverage  # Coverage report
 3. **Check availability**: "What times are available for a test drive this weekend?"
 4. **Book a test drive**: "I'd like to book a test drive for Saturday at 2 PM"
 
-### For Support Teams
-- Monitor bookings and assignments in Salesforce console
-- Manage customer cases and follow-ups
-- Track conversion metrics and dealer performance
-- Adjust scheduling policies as needed
+## Login URL:
+URL: https://login.salesforce.com
 
-## Resources
+## Access Customer Portal:
+URL: https://electracars.my.site.com/homepage 
 
-- [Salesforce Extensions Documentation](https://developer.salesforce.com/tools/vscode/)
-- [Salesforce CLI Setup Guide](https://developer.salesforce.com/docs/atlas.en-us.sfdx_setup.meta/sfdx_setup/sfdx_setup_intro.htm)
-- [Salesforce DX Developer Guide](https://developer.salesforce.com/docs/atlas.en-us.sfdx_dev.meta/sfdx_dev/sfdx_dev_intro.htm)
-- [Agentforce Documentation](https://developer.salesforce.com/docs/cloud/salesforce-ai-research-group/guide/intro.htm)
-
-## Contributing
-
-1. Create a feature branch
-2. Make your changes and ensure tests pass
-3. Run `npm run prettier` to format code
-4. Submit a pull request
-
-## License
-
-Proprietary - Hackathon Project
-# Salesforce DX Project: Next Steps
-
-Now that you’ve created a Salesforce DX project, what’s next? Here are some documentation resources to get you started.
-
-## How Do You Plan to Deploy Your Changes?
-
-Do you want to deploy a set of changes, or create a self-contained application? Choose a [development model](https://developer.salesforce.com/tools/vscode/en/user-guide/development-models).
-
-## Configure Your Salesforce DX Project
-
-The `sfdx-project.json` file contains useful configuration information for your project. See [Salesforce DX Project Configuration](https://developer.salesforce.com/docs/atlas.en-us.sfdx_dev.meta/sfdx_dev/sfdx_dev_ws_config.htm) in the _Salesforce DX Developer Guide_ for details about this file.
-
-## Read All About It
-
-- [Salesforce Extensions Documentation](https://developer.salesforce.com/tools/vscode/)
-- [Salesforce CLI Setup Guide](https://developer.salesforce.com/docs/atlas.en-us.sfdx_setup.meta/sfdx_setup/sfdx_setup_intro.htm)
-- [Salesforce DX Developer Guide](https://developer.salesforce.com/docs/atlas.en-us.sfdx_dev.meta/sfdx_dev/sfdx_dev_intro.htm)
-- [Salesforce CLI Command Reference](https://developer.salesforce.com/docs/atlas.en-us.sfdx_cli_reference.meta/sfdx_cli_reference/cli_reference.htm)
+## Access as a dealer:
+Login as Lakshmi Venkat to get the leads via Omni intelligent routing
